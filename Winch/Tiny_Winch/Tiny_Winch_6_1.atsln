@@ -1,0 +1,20 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Tiny_Winch", "Tiny_Winch\Tiny_Winch_6_1.cproj", "{0B6C57AA-6BAE-420D-A723-7D7F6CCD13BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B6C57AA-6BAE-420D-A723-7D7F6CCD13BD}.Debug|AVR.ActiveCfg = Debug|AVR
+		{0B6C57AA-6BAE-420D-A723-7D7F6CCD13BD}.Debug|AVR.Build.0 = Debug|AVR
+		{0B6C57AA-6BAE-420D-A723-7D7F6CCD13BD}.Release|AVR.ActiveCfg = Release|AVR
+		{0B6C57AA-6BAE-420D-A723-7D7F6CCD13BD}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,129 @@
+Cmp-Mod V01 Created by Cvpcb (2014-08-05 BZR 5054)-product   date = 05/11/2014 09:09:29
+
+BeginCmp
+TimeStamp = /545983D3;
+Reference = C1;
+ValeurCmp = 10uF;
+IdModule  = w_smd_cap:c_tant_B;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592A32;
+Reference = C2;
+ValeurCmp = 10uF;
+IdModule  = w_smd_cap:c_tant_B;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592B42;
+Reference = C3;
+ValeurCmp = 0.1uF;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /5459310D;
+Reference = C4;
+ValeurCmp = 0.1uF;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /545986D8;
+Reference = D1;
+ValeurCmp = LED;
+IdModule  = Old_mods:LED-0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /5459138B;
+Reference = IC1;
+ValeurCmp = ATTINY45-S;
+IdModule  = w_smd_dil:tssop-8;
+EndCmp
+
+BeginCmp
+TimeStamp = /5459440E;
+Reference = K1;
+ValeurCmp = CONN_3;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x03;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592BAB;
+Reference = P1;
+ValeurCmp = CONN_3X2;
+IdModule  = Old_mods:Header_3x2x050_th;
+EndCmp
+
+BeginCmp
+TimeStamp = /54593FA2;
+Reference = P2;
+ValeurCmp = CONN_2;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02;
+EndCmp
+
+BeginCmp
+TimeStamp = /5459A058;
+Reference = Q1;
+ValeurCmp = DMHC3025;
+IdModule  = w_smd_dil:so-8;
+EndCmp
+
+BeginCmp
+TimeStamp = /545989E7;
+Reference = R1;
+ValeurCmp = 1K;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /54594803;
+Reference = R2;
+ValeurCmp = 10K;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /54593CD6;
+Reference = R3;
+ValeurCmp = 1K;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592AB9;
+Reference = R4;
+ValeurCmp = 100;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /545930B5;
+Reference = R5;
+ValeurCmp = 1K;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592F55;
+Reference = R6;
+ValeurCmp = R;
+IdModule  = SK_mods:SM1210;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592ED3;
+Reference = R7;
+ValeurCmp = 100;
+IdModule  = SK_mods:SM0603_Resistor;
+EndCmp
+
+BeginCmp
+TimeStamp = /54592C96;
+Reference = TP1;
+ValeurCmp = TEST_POINT;
+IdModule  = SK_mods:TP20;
+EndCmp
+
+EndListe

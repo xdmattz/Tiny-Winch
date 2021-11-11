@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name SK_mods)(type KiCad)(uri "${MY_LIBS}\\Sketchup Models\\SK_Mods.pretty")(options "")(descr "Parts with Sketchup 3d mods"))
+  (lib (name Old_mods)(type Legacy)(uri "${MY_LIBS}\\Legacy Libs\\Footprints\\Temp.mod")(options "")(descr "Misc working parts"))
+  (lib (name w_smd_dil)(type Legacy)(uri ${MY_LIBS}\libKiCad\footprint\w_smd_dil.mod)(options "")(descr "SOIC etc"))
+  (lib (name w_smd_cap)(type Legacy)(uri ${MY_LIBS}\libKiCad\footprint\w_smd_cap.mod)(options "")(descr "SMT Caps"))
+)

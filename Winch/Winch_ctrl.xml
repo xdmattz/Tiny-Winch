@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:\Dan\Eng Projects\Winch\Winch_ctrl.sch</source>
+    <date>04/11/2014 16:46:56</date>
+    <tool>Eeschema (2014-08-05 BZR 5054)-product</tool>
+  </design>
+  <components>
+    <comp ref="IC1">
+      <value>ATTINY45-S</value>
+      <footprint>SO8-200</footprint>
+      <libsource lib="atmel" part="ATTINY45-S"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5459138B</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <libsource lib="device" part="CP1"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592A32</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>100</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592AB9</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>0.1uF</value>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592B42</tstamp>
+    </comp>
+    <comp ref="P1">
+      <value>CONN_3X2</value>
+      <libsource lib="conn" part="CONN_3X2"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592BAB</tstamp>
+    </comp>
+    <comp ref="TP1">
+      <value>TEST_POINT</value>
+      <libsource lib="SwitchTest-cache" part="TEST_POINT"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592C96</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>100</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592ED3</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>R</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54592F55</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>1K</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>545930B5</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>0.1uF</value>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5459310D</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>1K</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54593CD6</tstamp>
+    </comp>
+    <comp ref="P2">
+      <value>CONN_2</value>
+      <libsource lib="conn" part="CONN_2"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54593FA2</tstamp>
+    </comp>
+    <comp ref="K1">
+      <value>CONN_3</value>
+      <libsource lib="conn" part="CONN_3"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5459440E</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>10K</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>54594803</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>10uF</value>
+      <libsource lib="device" part="CP1"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>545983D3</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>LED</value>
+      <libsource lib="device" part="LED"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>545986D8</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>1K</value>
+      <libsource lib="SwitchTest-cache" part="Rx"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>545989E7</tstamp>
+    </comp>
+    <comp ref="Q1">
+      <value>DMHC3025</value>
+      <libsource lib="dmhc3025" part="DMHC3025"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5459A058</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="atmel" part="ATTINY25-S">
+      <aliases>
+        <alias>ATTINY45-S</alias>
+        <alias>ATTINY85-S</alias>
+      </aliases>
+      <description>ATTINY25, SO8 Wide, 2k Flash, 128B SRAM, 128B EEPROM, Debug Wire</description>
+      <docs>http://www.atmel.com/images/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf</docs>
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">ATTINY25-S</field>
+        <field name="Footprint">SO8-200</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PB5(~RESET~/dW/ADC0/PCINT5)" type="BiDi"/>
+        <pin num="2" name="PB3(XTAL1/CLKI/OC1B/ADC3/PCINT3)" type="BiDi"/>
+        <pin num="3" name="PB4(XTAL2/CLKO/OC1B/ADC2/PCINT4)" type="BiDi"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="PB0(MOSI/DI/SDA/AIN0/OC0A/OC1A/AREF/PCINT0)" type="BiDi"/>
+        <pin num="6" name="PB1(MISO/DO/AIN1/OC0B/OC1A/PCINT1)" type="BiDi"/>
+        <pin num="7" name="PB2(SCK/USCK/SCL/T0/INT0/ADC1/PCINT2)" type="BiDi"/>
+        <pin num="8" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C">
+      <description>Condensateur non polarise</description>
+      <footprints>
+        <fp>SM*</fp>
+        <fp>C?</fp>
+        <fp>C1-1</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP1">
+      <description>Condensateur polarise</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>SM*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP1</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="LED">
+      <footprints>
+        <fp>LED-3MM</fp>
+        <fp>LED-5MM</fp>
+        <fp>LED-10MM</fp>
+        <fp>LED-0603</fp>
+        <fp>LED-0805</fp>
+        <fp>LED-1206</fp>
+        <fp>LEDV</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="K" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="dmhc3025" part="DMHC3025">
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">DMHC3025</field>
+      </fields>
+      <pins>
+        <pin num="1" name="N1G" type="input"/>
+        <pin num="2" name="N1DP1D" type="input"/>
+        <pin num="3" name="N1SN2S" type="input"/>
+        <pin num="4" name="N2G" type="input"/>
+        <pin num="5" name="P2G" type="input"/>
+        <pin num="6" name="N2DP2D" type="input"/>
+        <pin num="7" name="P1SP2S" type="input"/>
+        <pin num="8" name="P1G" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="SwitchTest-cache" part="TEST_POINT">
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_POINT</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="SwitchTest-cache" part="Rx">
+      <footprints>
+        <fp>R?</fp>
+        <fp>SM0603</fp>
+        <fp>SM0805</fp>
+        <fp>R?-*</fp>
+        <fp>SM1206</fp>
+        <fp>SM0402</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">Rx</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_2">
+      <description>Symbole general de connecteur</description>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_2</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="PM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_3">
+      <description>Symbole general de connecteur</description>
+      <fields>
+        <field name="Reference">K</field>
+        <field name="Value">CONN_3</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="PM" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_3X2">
+      <description>Symbole general de connecteur</description>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_3X2</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="device">
+      <uri>C:\Dan\kicad-winbuilder-3.4\kicad\share\library\device.lib</uri>
+    </library>
+    <library logical="dmhc3025">
+      <uri>Kicad\dmhc3025.lib</uri>
+    </library>
+    <library logical="SwitchTest-cache">
+      <uri>C:\Dan\Eng Projects\ATM\RX12\KiCAD\SwitchTest-cache.lib</uri>
+    </library>
+    <library logical="atmel">
+      <uri>C:\Dan\kicad-winbuilder-3.4\kicad\share\library\atmel.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>C:\Dan\kicad-winbuilder-3.4\kicad\share\library\conn.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="GND">
+      <node ref="C1" pin="2"/>
+      <node ref="K1" pin="3"/>
+      <node ref="D1" pin="2"/>
+      <node ref="R6" pin="1"/>
+      <node ref="P1" pin="6"/>
+      <node ref="C4" pin="2"/>
+      <node ref="C3" pin="2"/>
+      <node ref="C2" pin="2"/>
+      <node ref="IC1" pin="4"/>
+    </net>
+    <net code="2" name="Net-(P2-Pad1)">
+      <node ref="Q1" pin="2"/>
+      <node ref="P2" pin="1"/>
+    </net>
+    <net code="3" name="Net-(P2-Pad2)">
+      <node ref="P2" pin="2"/>
+      <node ref="Q1" pin="6"/>
+    </net>
+    <net code="4" name="Net-(D1-Pad1)">
+      <node ref="R1" pin="2"/>
+      <node ref="D1" pin="1"/>
+    </net>
+    <net code="5" name="/~RST">
+      <node ref="P1" pin="5"/>
+      <node ref="IC1" pin="1"/>
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="6" name="Net-(Q1-Pad4)">
+      <node ref="Q1" pin="4"/>
+      <node ref="Q1" pin="5"/>
+      <node ref="R7" pin="2"/>
+    </net>
+    <net code="7" name="Net-(Q1-Pad1)">
+      <node ref="Q1" pin="1"/>
+      <node ref="R4" pin="1"/>
+      <node ref="Q1" pin="8"/>
+    </net>
+    <net code="8" name="/MISO">
+      <node ref="TP1" pin="1"/>
+      <node ref="P1" pin="1"/>
+      <node ref="R1" pin="1"/>
+      <node ref="IC1" pin="6"/>
+    </net>
+    <net code="9" name="Net-(Q1-Pad3)">
+      <node ref="Q1" pin="3"/>
+      <node ref="R5" pin="1"/>
+      <node ref="R6" pin="2"/>
+    </net>
+    <net code="10" name="Net-(IC1-Pad3)">
+      <node ref="IC1" pin="3"/>
+      <node ref="R7" pin="1"/>
+    </net>
+    <net code="11" name="Net-(C4-Pad1)">
+      <node ref="R3" pin="1"/>
+      <node ref="R5" pin="2"/>
+      <node ref="C4" pin="1"/>
+    </net>
+    <net code="12" name="Net-(IC1-Pad2)">
+      <node ref="R4" pin="2"/>
+      <node ref="IC1" pin="2"/>
+    </net>
+    <net code="13" name="+5V">
+      <node ref="K1" pin="2"/>
+      <node ref="Q1" pin="7"/>
+      <node ref="IC1" pin="8"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C3" pin="1"/>
+      <node ref="P1" pin="2"/>
+      <node ref="R2" pin="2"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="14" name="/MOSI">
+      <node ref="K1" pin="1"/>
+      <node ref="IC1" pin="5"/>
+      <node ref="P1" pin="4"/>
+    </net>
+    <net code="15" name="/SCK">
+      <node ref="IC1" pin="7"/>
+      <node ref="P1" pin="3"/>
+      <node ref="R3" pin="2"/>
+    </net>
+  </nets>
+</export>

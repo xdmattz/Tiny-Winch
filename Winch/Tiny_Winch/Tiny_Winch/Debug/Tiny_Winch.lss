@@ -1,0 +1,658 @@
+
+Tiny_Winch.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000029e  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  0000029e  00000332  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000005  00800060  00800060  00000332  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000332  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000090  00000000  00000000  00000362  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000003b8  00000000  00000000  000003f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000019c  00000000  00000000  000007aa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000286  00000000  00000000  00000946  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000134  00000000  00000000  00000bcc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000225  00000000  00000000  00000d00  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000000cc  00000000  00000000  00000f25  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000080  00000000  00000000  00000ff1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
+   2:	1d c0       	rjmp	.+58     	; 0x3e <__bad_interrupt>
+   4:	1d c0       	rjmp	.+58     	; 0x40 <__vector_2>
+   6:	1b c0       	rjmp	.+54     	; 0x3e <__bad_interrupt>
+   8:	1a c0       	rjmp	.+52     	; 0x3e <__bad_interrupt>
+   a:	19 c0       	rjmp	.+50     	; 0x3e <__bad_interrupt>
+   c:	18 c0       	rjmp	.+48     	; 0x3e <__bad_interrupt>
+   e:	17 c0       	rjmp	.+46     	; 0x3e <__bad_interrupt>
+  10:	3d c0       	rjmp	.+122    	; 0x8c <__vector_8>
+  12:	15 c0       	rjmp	.+42     	; 0x3e <__bad_interrupt>
+  14:	30 c0       	rjmp	.+96     	; 0x76 <__vector_10>
+  16:	13 c0       	rjmp	.+38     	; 0x3e <__bad_interrupt>
+  18:	12 c0       	rjmp	.+36     	; 0x3e <__bad_interrupt>
+  1a:	11 c0       	rjmp	.+34     	; 0x3e <__bad_interrupt>
+  1c:	10 c0       	rjmp	.+32     	; 0x3e <__bad_interrupt>
+
+0000001e <__ctors_end>:
+  1e:	11 24       	eor	r1, r1
+  20:	1f be       	out	0x3f, r1	; 63
+  22:	cf e5       	ldi	r28, 0x5F	; 95
+  24:	d1 e0       	ldi	r29, 0x01	; 1
+  26:	de bf       	out	0x3e, r29	; 62
+  28:	cd bf       	out	0x3d, r28	; 61
+
+0000002a <__do_clear_bss>:
+  2a:	20 e0       	ldi	r18, 0x00	; 0
+  2c:	a0 e6       	ldi	r26, 0x60	; 96
+  2e:	b0 e0       	ldi	r27, 0x00	; 0
+  30:	01 c0       	rjmp	.+2      	; 0x34 <.do_clear_bss_start>
+
+00000032 <.do_clear_bss_loop>:
+  32:	1d 92       	st	X+, r1
+
+00000034 <.do_clear_bss_start>:
+  34:	a5 36       	cpi	r26, 0x65	; 101
+  36:	b2 07       	cpc	r27, r18
+  38:	e1 f7       	brne	.-8      	; 0x32 <.do_clear_bss_loop>
+  3a:	89 d0       	rcall	.+274    	; 0x14e <main>
+  3c:	2e c1       	rjmp	.+604    	; 0x29a <_exit>
+
+0000003e <__bad_interrupt>:
+  3e:	e0 cf       	rjmp	.-64     	; 0x0 <__vectors>
+
+00000040 <__vector_2>:
+
+
+// the Pin change interrupt PCINT0 is used to measure
+// the 1 - 2 ms pulse width of the servo control signal
+ISR(PCINT0_vect)
+{
+  40:	1f 92       	push	r1
+  42:	0f 92       	push	r0
+  44:	0f b6       	in	r0, 0x3f	; 63
+  46:	0f 92       	push	r0
+  48:	11 24       	eor	r1, r1
+  4a:	8f 93       	push	r24
+	if(bit_is_set(PINB,SIG_IN))	// rising edge detect
+  4c:	b0 9b       	sbis	0x16, 0	; 22
+  4e:	06 c0       	rjmp	.+12     	; 0x5c <__vector_2+0x1c>
+	{
+		// start the timer
+		TCNT1 = 0x00;
+  50:	1f bc       	out	0x2f, r1	; 47
+		TCCR1 = 0x05;	// set the prescaler to 16 - this should give about 62 counts per ms 
+  52:	85 e0       	ldi	r24, 0x05	; 5
+  54:	80 bf       	out	0x30, r24	; 48
+		// set the test bit
+		No_RX_Count = 0;	// reset the RX Counter
+  56:	10 92 60 00 	sts	0x0060, r1
+  5a:	07 c0       	rjmp	.+14     	; 0x6a <__vector_2+0x2a>
+//		SetTestBit();
+	}
+	else
+	{
+		// stop the timer
+		TCCR1 = 0;
+  5c:	10 be       	out	0x30, r1	; 48
+		if(TCNT1 > SWITCH_THRESHOLD)
+  5e:	8f b5       	in	r24, 0x2f	; 47
+  60:	8e 35       	cpi	r24, 0x5E	; 94
+  62:	10 f0       	brcs	.+4      	; 0x68 <__vector_2+0x28>
+		{
+			sbi(GPIOR0, SWITCH_POS);
+  64:	8b 9a       	sbi	0x11, 3	; 17
+  66:	01 c0       	rjmp	.+2      	; 0x6a <__vector_2+0x2a>
+		}
+		else 
+		{
+			cbi(GPIOR0, SWITCH_POS);
+  68:	8b 98       	cbi	0x11, 3	; 17
+		}
+//		ClearTestBit();
+	}
+}
+  6a:	8f 91       	pop	r24
+  6c:	0f 90       	pop	r0
+  6e:	0f be       	out	0x3f, r0	; 63
+  70:	0f 90       	pop	r0
+  72:	1f 90       	pop	r1
+  74:	18 95       	reti
+
+00000076 <__vector_10>:
+
+
+// TIMER 0 ISR is for the 100ms timer
+ISR(TIM0_COMPA_vect)
+{
+  76:	1f 92       	push	r1
+  78:	0f 92       	push	r0
+  7a:	0f b6       	in	r0, 0x3f	; 63
+  7c:	0f 92       	push	r0
+  7e:	11 24       	eor	r1, r1
+	GPIOR0 |= _BV(TIME_TICK_40mS);	// set the time tick for 100ms timer
+  80:	89 9a       	sbi	0x11, 1	; 17
+}
+  82:	0f 90       	pop	r0
+  84:	0f be       	out	0x3f, r0	; 63
+  86:	0f 90       	pop	r0
+  88:	1f 90       	pop	r1
+  8a:	18 95       	reti
+
+0000008c <__vector_8>:
+
+ISR(ADC_vect)
+{
+  8c:	1f 92       	push	r1
+  8e:	0f 92       	push	r0
+  90:	0f b6       	in	r0, 0x3f	; 63
+  92:	0f 92       	push	r0
+  94:	11 24       	eor	r1, r1
+  96:	8f 93       	push	r24
+  98:	9f 93       	push	r25
+	uint16_t Result;
+	
+//	ToggleTestBit();
+	
+	Result = ADC;
+  9a:	84 b1       	in	r24, 0x04	; 4
+  9c:	95 b1       	in	r25, 0x05	; 5
+	// get the ADC result
+	if (Result > ADC_THRESHOLD)		// compare to the threshold
+  9e:	8d 38       	cpi	r24, 0x8D	; 141
+  a0:	91 05       	cpc	r25, r1
+  a2:	18 f0       	brcs	.+6      	; 0xaa <__vector_8+0x1e>
+	{
+		SetTestBit();
+  a4:	c1 9a       	sbi	0x18, 1	; 24
+		sbi(GPIOR0,OVER_CURRENT);		// if greater than, set the OVER_CURRENT flag
+  a6:	8a 9a       	sbi	0x11, 2	; 17
+  a8:	01 c0       	rjmp	.+2      	; 0xac <__vector_8+0x20>
+	}
+	else 
+	{
+		ClearTestBit();	
+  aa:	c1 98       	cbi	0x18, 1	; 24
+	}
+
+
+}
+  ac:	9f 91       	pop	r25
+  ae:	8f 91       	pop	r24
+  b0:	0f 90       	pop	r0
+  b2:	0f be       	out	0x3f, r0	; 63
+  b4:	0f 90       	pop	r0
+  b6:	1f 90       	pop	r1
+  b8:	18 95       	reti
+
+000000ba <Motor_On_FWD>:
+	sei();	// global interrupt enable
+}
+
+void Motor_On_FWD(void)
+{
+	cbi(GPIOR0,OVER_CURRENT);	// clear the current trip
+  ba:	8a 98       	cbi	0x11, 2	; 17
+	PORTB |= _BV(MOTOR1);
+  bc:	c3 9a       	sbi	0x18, 3	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  be:	87 ea       	ldi	r24, 0xA7	; 167
+  c0:	91 e6       	ldi	r25, 0x61	; 97
+  c2:	01 97       	sbiw	r24, 0x01	; 1
+  c4:	f1 f7       	brne	.-4      	; 0xc2 <Motor_On_FWD+0x8>
+  c6:	00 c0       	rjmp	.+0      	; 0xc8 <Motor_On_FWD+0xe>
+  c8:	00 00       	nop
+	// Do we need to pause here to blank the motor turn on current spike?
+	_delay_ms(TURN_ON_DELAY);
+	ADC_On();
+  ca:	86 b1       	in	r24, 0x06	; 6
+  cc:	80 6c       	ori	r24, 0xC0	; 192
+  ce:	86 b9       	out	0x06, r24	; 6
+  d0:	08 95       	ret
+
+000000d2 <Motor_On_REV>:
+}
+
+void Motor_On_REV(void)
+{
+	cbi(GPIOR0,OVER_CURRENT);	// clear the current trip
+  d2:	8a 98       	cbi	0x11, 2	; 17
+	PORTB |= _BV(MOTOR2);
+  d4:	c4 9a       	sbi	0x18, 4	; 24
+  d6:	87 ea       	ldi	r24, 0xA7	; 167
+  d8:	91 e6       	ldi	r25, 0x61	; 97
+  da:	01 97       	sbiw	r24, 0x01	; 1
+  dc:	f1 f7       	brne	.-4      	; 0xda <Motor_On_REV+0x8>
+  de:	00 c0       	rjmp	.+0      	; 0xe0 <Motor_On_REV+0xe>
+  e0:	00 00       	nop
+	// Do we need to pause here to blank the motor turn on current spike?
+	_delay_ms(TURN_ON_DELAY);
+	ADC_On();	
+  e2:	86 b1       	in	r24, 0x06	; 6
+  e4:	80 6c       	ori	r24, 0xC0	; 192
+  e6:	86 b9       	out	0x06, r24	; 6
+  e8:	08 95       	ret
+
+000000ea <Motor_Off>:
+}
+
+void Motor_Off(void)
+{
+	PORTB &= ~(_BV(MOTOR1) | _BV(MOTOR2));
+  ea:	88 b3       	in	r24, 0x18	; 24
+  ec:	87 7e       	andi	r24, 0xE7	; 231
+  ee:	88 bb       	out	0x18, r24	; 24
+	ADC_Off();
+  f0:	86 b1       	in	r24, 0x06	; 6
+  f2:	8f 73       	andi	r24, 0x3F	; 63
+  f4:	86 b9       	out	0x06, r24	; 6
+  f6:	08 95       	ret
+
+000000f8 <setup>:
+    }
+}
+
+void setup(void)
+{
+	DDRB = _BV(MOTOR1) | _BV(MOTOR2) | _BV(TESTBIT);	// set the LED to output
+  f8:	8a e1       	ldi	r24, 0x1A	; 26
+  fa:	87 bb       	out	0x17, r24	; 23
+//	PORTB = _BV(LED1);
+	PORTB = 0;	// make sure everything is off
+  fc:	18 ba       	out	0x18, r1	; 24
+	
+	// setup the pin change interrupt
+	PCMSK = _BV(SIG_IN);
+  fe:	81 e0       	ldi	r24, 0x01	; 1
+ 100:	85 bb       	out	0x15, r24	; 21
+	
+	// setup timer0
+	GTCCR = 0x80;	// TSM set
+ 102:	80 e8       	ldi	r24, 0x80	; 128
+ 104:	8c bd       	out	0x2c, r24	; 44
+	//	OCR0A = 0x61;	// Set the count to 97 (0x61) to give a 10 Hz tick (100ms)
+	OCR0A = 0x27;	// Set the count to 39 (0x27) to give a 25 Hz tick (40ms)
+ 106:	87 e2       	ldi	r24, 0x27	; 39
+ 108:	89 bd       	out	0x29, r24	; 41
+	TCCR0A = 2;		// CTC mode
+ 10a:	82 e0       	ldi	r24, 0x02	; 2
+ 10c:	8a bd       	out	0x2a, r24	; 42
+	TCCR0B = 0x05;	// Start timer with 1024 prescaler
+ 10e:	85 e0       	ldi	r24, 0x05	; 5
+ 110:	83 bf       	out	0x33, r24	; 51
+	TIMSK = 0x10;	// set the OCIE0A interrupt enable
+ 112:	80 e1       	ldi	r24, 0x10	; 16
+ 114:	89 bf       	out	0x39, r24	; 57
+	
+	
+	// setup timer1 for timing the pulse widths
+	TCCR1 = 0x00;	// set timer1 prescaler to 16 to start the counter.
+ 116:	10 be       	out	0x30, r1	; 48
+	
+	// enable the interrupts in the GMSK
+	GIMSK = 0x20;	//
+ 118:	80 e2       	ldi	r24, 0x20	; 32
+ 11a:	8b bf       	out	0x3b, r24	; 59
+	
+	set_sleep_mode(SLEEP_MODE_IDLE);
+ 11c:	85 b7       	in	r24, 0x35	; 53
+ 11e:	87 7e       	andi	r24, 0xE7	; 231
+ 120:	85 bf       	out	0x35, r24	; 53
+	
+	// setup the ADC
+	ADMUX = 0x81;
+ 122:	81 e8       	ldi	r24, 0x81	; 129
+ 124:	87 b9       	out	0x07, r24	; 7
+	DIDR0 = 0x04;	// disable PB2 input
+ 126:	84 e0       	ldi	r24, 0x04	; 4
+ 128:	84 bb       	out	0x14, r24	; 20
+	ADCSRA = 0x2e;	// set this register to start conversions when motor is on.
+ 12a:	8e e2       	ldi	r24, 0x2E	; 46
+ 12c:	86 b9       	out	0x06, r24	; 6
+	ADCSRB = 0;
+ 12e:	13 b8       	out	0x03, r1	; 3
+	
+	ClearTestBit();
+ 130:	c1 98       	cbi	0x18, 1	; 24
+	
+	// initialize the state machine
+	state_ptr = &(State1);
+ 132:	8b e0       	ldi	r24, 0x0B	; 11
+ 134:	91 e0       	ldi	r25, 0x01	; 1
+ 136:	90 93 62 00 	sts	0x0062, r25
+ 13a:	80 93 61 00 	sts	0x0061, r24
+	Motor_Off();
+ 13e:	d5 df       	rcall	.-86     	; 0xea <Motor_Off>
+	GPIOR0 = 0;
+ 140:	11 ba       	out	0x11, r1	; 17
+	
+	delay_count = 0;
+ 142:	10 92 64 00 	sts	0x0064, r1
+	No_RX_Count = 0;
+ 146:	10 92 60 00 	sts	0x0060, r1
+	
+	sei();	// global interrupt enable
+ 14a:	78 94       	sei
+ 14c:	08 95       	ret
+
+0000014e <main>:
+}
+
+int main(void)
+{
+//	uint8_t time_count1 = 0;
+	setup();
+ 14e:	d4 df       	rcall	.-88     	; 0xf8 <setup>
+				if (bit_is_set(GPIOR0,SWITCH_POS))
+				{
+					state_ptr = &(State1A);	// if forward
+				} else
+				{
+					state_ptr = &(State1);	// if reverse
+ 150:	0b e0       	ldi	r16, 0x0B	; 11
+ 152:	11 e0       	ldi	r17, 0x01	; 1
+			{
+				Motor_Off();
+				// if we get here the RC receiver must be off so change the state depending on the last known SWITCH_POS
+				if (bit_is_set(GPIOR0,SWITCH_POS))
+				{
+					state_ptr = &(State1A);	// if forward
+ 154:	cc e2       	ldi	r28, 0x2C	; 44
+ 156:	d1 e0       	ldi	r29, 0x01	; 1
+//	uint8_t time_count1 = 0;
+	setup();
+	
+    while(1)
+    {
+		if(bit_is_set(GPIOR0,TIME_TICK_40mS))
+ 158:	89 9b       	sbis	0x11, 1	; 17
+ 15a:	22 c0       	rjmp	.+68     	; 0x1a0 <__stack+0x41>
+		{
+			GPIOR0 &= ~(_BV(TIME_TICK_40mS));	// clear the time tick flag
+ 15c:	89 98       	cbi	0x11, 1	; 17
+
+			if(delay_count < DELAY_TIMEOUT)		// 1/2 second timer
+ 15e:	80 91 64 00 	lds	r24, 0x0064
+ 162:	88 30       	cpi	r24, 0x08	; 8
+ 164:	30 f4       	brcc	.+12     	; 0x172 <__stack+0x13>
+			{
+				delay_count++;	// increment the delay count
+ 166:	80 91 64 00 	lds	r24, 0x0064
+ 16a:	8f 5f       	subi	r24, 0xFF	; 255
+ 16c:	80 93 64 00 	sts	0x0064, r24
+ 170:	01 c0       	rjmp	.+2      	; 0x174 <__stack+0x15>
+			}
+			else
+			{
+				sbi(GPIOR0,TIMEOUT);	// set the timeout flag = 1/2 sec has occurred
+ 172:	8c 9a       	sbi	0x11, 4	; 17
+			}
+			if (No_RX_Count > RX_TIMEOUT)
+ 174:	80 91 60 00 	lds	r24, 0x0060
+ 178:	8c 30       	cpi	r24, 0x0C	; 12
+ 17a:	68 f0       	brcs	.+26     	; 0x196 <__stack+0x37>
+			{
+				Motor_Off();
+ 17c:	b6 df       	rcall	.-148    	; 0xea <Motor_Off>
+				// if we get here the RC receiver must be off so change the state depending on the last known SWITCH_POS
+				if (bit_is_set(GPIOR0,SWITCH_POS))
+ 17e:	8b 9b       	sbis	0x11, 3	; 17
+ 180:	05 c0       	rjmp	.+10     	; 0x18c <__stack+0x2d>
+				{
+					state_ptr = &(State1A);	// if forward
+ 182:	d0 93 62 00 	sts	0x0062, r29
+ 186:	c0 93 61 00 	sts	0x0061, r28
+ 18a:	0a c0       	rjmp	.+20     	; 0x1a0 <__stack+0x41>
+				} else
+				{
+					state_ptr = &(State1);	// if reverse
+ 18c:	10 93 62 00 	sts	0x0062, r17
+ 190:	00 93 61 00 	sts	0x0061, r16
+ 194:	05 c0       	rjmp	.+10     	; 0x1a0 <__stack+0x41>
+				}
+			} 
+			else
+			{
+				No_RX_Count++;
+ 196:	80 91 60 00 	lds	r24, 0x0060
+ 19a:	8f 5f       	subi	r24, 0xFF	; 255
+ 19c:	80 93 60 00 	sts	0x0060, r24
+			}
+		}
+		// run the state machine
+		(*state_ptr)();
+ 1a0:	e0 91 61 00 	lds	r30, 0x0061
+ 1a4:	f0 91 62 00 	lds	r31, 0x0062
+ 1a8:	09 95       	icall
+		// I could actually sleep here!
+		sleep_enable();
+ 1aa:	85 b7       	in	r24, 0x35	; 53
+ 1ac:	80 62       	ori	r24, 0x20	; 32
+ 1ae:	85 bf       	out	0x35, r24	; 53
+		sleep_cpu();
+ 1b0:	88 95       	sleep
+		sleep_disable();
+ 1b2:	85 b7       	in	r24, 0x35	; 53
+ 1b4:	8f 7d       	andi	r24, 0xDF	; 223
+ 1b6:	85 bf       	out	0x35, r24	; 53
+		// _delay_ms(250);
+    }
+ 1b8:	cf cf       	rjmp	.-98     	; 0x158 <main+0xa>
+
+000001ba <State3>:
+	}
+}
+
+void State3(void)
+{
+	if (bit_is_clear(GPIOR0,SWITCH_POS))	// switch went low
+ 1ba:	8b 99       	sbic	0x11, 3	; 17
+ 1bc:	08 c0       	rjmp	.+16     	; 0x1ce <State3+0x14>
+	{
+		Motor_Off();
+ 1be:	95 df       	rcall	.-214    	; 0xea <Motor_Off>
+		state_ptr = &(State1);	// Set State to State1
+ 1c0:	8b e0       	ldi	r24, 0x0B	; 11
+ 1c2:	91 e0       	ldi	r25, 0x01	; 1
+ 1c4:	90 93 62 00 	sts	0x0062, r25
+ 1c8:	80 93 61 00 	sts	0x0061, r24
+ 1cc:	08 95       	ret
+	}
+	else if (bit_is_set(GPIOR0,OVER_CURRENT))
+ 1ce:	8a 9b       	sbis	0x11, 2	; 17
+ 1d0:	08 c0       	rjmp	.+16     	; 0x1e2 <State3+0x28>
+	{
+		Motor_Off();
+ 1d2:	8b df       	rcall	.-234    	; 0xea <Motor_Off>
+		cbi(GPIOR0, OVER_CURRENT);	// clear the OVER_CURRENT;
+ 1d4:	8a 98       	cbi	0x11, 2	; 17
+		state_ptr = &(State1A);	// set State to State 1A
+ 1d6:	8c e2       	ldi	r24, 0x2C	; 44
+ 1d8:	91 e0       	ldi	r25, 0x01	; 1
+ 1da:	90 93 62 00 	sts	0x0062, r25
+ 1de:	80 93 61 00 	sts	0x0061, r24
+ 1e2:	08 95       	ret
+
+000001e4 <State3A>:
+	}
+}
+
+void State3A(void)
+{
+	if (bit_is_set(GPIOR0, SWITCH_POS)) // switch went up
+ 1e4:	8b 9b       	sbis	0x11, 3	; 17
+ 1e6:	08 c0       	rjmp	.+16     	; 0x1f8 <State3A+0x14>
+	{
+		Motor_Off();
+ 1e8:	80 df       	rcall	.-256    	; 0xea <Motor_Off>
+		state_ptr = &(State1A);
+ 1ea:	8c e2       	ldi	r24, 0x2C	; 44
+ 1ec:	91 e0       	ldi	r25, 0x01	; 1
+ 1ee:	90 93 62 00 	sts	0x0062, r25
+ 1f2:	80 93 61 00 	sts	0x0061, r24
+ 1f6:	08 95       	ret
+	}
+	else if (bit_is_set(GPIOR0, OVER_CURRENT))
+ 1f8:	8a 9b       	sbis	0x11, 2	; 17
+ 1fa:	08 c0       	rjmp	.+16     	; 0x20c <State3A+0x28>
+	{
+		Motor_Off();
+ 1fc:	76 df       	rcall	.-276    	; 0xea <Motor_Off>
+		cbi(GPIOR0, OVER_CURRENT);	// clear the OVER_CURRENT;
+ 1fe:	8a 98       	cbi	0x11, 2	; 17
+		state_ptr = &(State1);
+ 200:	8b e0       	ldi	r24, 0x0B	; 11
+ 202:	91 e0       	ldi	r25, 0x01	; 1
+ 204:	90 93 62 00 	sts	0x0062, r25
+ 208:	80 93 61 00 	sts	0x0061, r24
+ 20c:	08 95       	ret
+
+0000020e <Start_Delay>:
+	}
+}
+
+void Start_Delay(void)
+{
+	delay_count = 0;		// reset timer
+ 20e:	10 92 64 00 	sts	0x0064, r1
+	cbi(GPIOR0,TIMEOUT);	// clear the timeout flag
+ 212:	8c 98       	cbi	0x11, 4	; 17
+ 214:	08 95       	ret
+
+00000216 <State1>:
+	ADC_Off();
+}
+
+void State1(void)
+{
+	if (bit_is_set(GPIOR0, SWITCH_POS))	// switch went up
+ 216:	8b 9b       	sbis	0x11, 3	; 17
+ 218:	08 c0       	rjmp	.+16     	; 0x22a <State1+0x14>
+	{
+		Motor_Off();
+ 21a:	67 df       	rcall	.-306    	; 0xea <Motor_Off>
+		// set state to State2
+		state_ptr = &(State2);
+ 21c:	86 e1       	ldi	r24, 0x16	; 22
+ 21e:	91 e0       	ldi	r25, 0x01	; 1
+ 220:	90 93 62 00 	sts	0x0062, r25
+ 224:	80 93 61 00 	sts	0x0061, r24
+		Start_Delay(); // Start 1/2 sec delay timer
+ 228:	f2 df       	rcall	.-28     	; 0x20e <Start_Delay>
+ 22a:	08 95       	ret
+
+0000022c <State2>:
+	}
+}
+
+void State2(void)
+{
+	if (bit_is_clear(GPIOR0, SWITCH_POS))	// switch went low
+ 22c:	8b 99       	sbic	0x11, 3	; 17
+ 22e:	09 c0       	rjmp	.+18     	; 0x242 <State2+0x16>
+	{
+		Motor_Off();
+ 230:	5c df       	rcall	.-328    	; 0xea <Motor_Off>
+		Start_Delay(); // restart 1/2 sec timer
+ 232:	ed df       	rcall	.-38     	; 0x20e <Start_Delay>
+		state_ptr = &(State2A);	// set state to State2A
+ 234:	87 e3       	ldi	r24, 0x37	; 55
+ 236:	91 e0       	ldi	r25, 0x01	; 1
+ 238:	90 93 62 00 	sts	0x0062, r25
+ 23c:	80 93 61 00 	sts	0x0061, r24
+ 240:	08 95       	ret
+	} else if (bit_is_set(GPIOR0,TIMEOUT))
+ 242:	8c 9b       	sbis	0x11, 4	; 17
+ 244:	08 c0       	rjmp	.+16     	; 0x256 <State2+0x2a>
+	{
+		cbi(GPIOR0,TIMEOUT);
+ 246:	8c 98       	cbi	0x11, 4	; 17
+		Motor_On_FWD();			// Direction Fwd
+ 248:	38 df       	rcall	.-400    	; 0xba <Motor_On_FWD>
+		state_ptr = &(State3);	// set state to State3
+ 24a:	8d ed       	ldi	r24, 0xDD	; 221
+ 24c:	90 e0       	ldi	r25, 0x00	; 0
+ 24e:	90 93 62 00 	sts	0x0062, r25
+ 252:	80 93 61 00 	sts	0x0061, r24
+ 256:	08 95       	ret
+
+00000258 <State1A>:
+	}
+}
+
+void State1A(void)
+{
+	if (bit_is_clear(GPIOR0,SWITCH_POS))	// switch went low
+ 258:	8b 99       	sbic	0x11, 3	; 17
+ 25a:	08 c0       	rjmp	.+16     	; 0x26c <State1A+0x14>
+	{
+		Motor_Off();
+ 25c:	46 df       	rcall	.-372    	; 0xea <Motor_Off>
+		Start_Delay();			// start 1/2 sec timer
+ 25e:	d7 df       	rcall	.-82     	; 0x20e <Start_Delay>
+		state_ptr = &(State2A);	// set State to State2A
+ 260:	87 e3       	ldi	r24, 0x37	; 55
+ 262:	91 e0       	ldi	r25, 0x01	; 1
+ 264:	90 93 62 00 	sts	0x0062, r25
+ 268:	80 93 61 00 	sts	0x0061, r24
+ 26c:	08 95       	ret
+
+0000026e <State2A>:
+	}
+}
+
+void State2A(void)
+{
+	if(bit_is_set(GPIOR0,SWITCH_POS))	// switch went up
+ 26e:	8b 9b       	sbis	0x11, 3	; 17
+ 270:	09 c0       	rjmp	.+18     	; 0x284 <State2A+0x16>
+	{
+		Motor_Off();
+ 272:	3b df       	rcall	.-394    	; 0xea <Motor_Off>
+		Start_Delay();			// reset 1/2 sec timer
+ 274:	cc df       	rcall	.-104    	; 0x20e <Start_Delay>
+		state_ptr = &(State2);	// set State to State2
+ 276:	86 e1       	ldi	r24, 0x16	; 22
+ 278:	91 e0       	ldi	r25, 0x01	; 1
+ 27a:	90 93 62 00 	sts	0x0062, r25
+ 27e:	80 93 61 00 	sts	0x0061, r24
+ 282:	08 95       	ret
+	}
+	else if (bit_is_set(GPIOR0, TIMEOUT))
+ 284:	8c 9b       	sbis	0x11, 4	; 17
+ 286:	08 c0       	rjmp	.+16     	; 0x298 <State2A+0x2a>
+	{
+		cbi(GPIOR0,TIMEOUT);
+ 288:	8c 98       	cbi	0x11, 4	; 17
+		Motor_On_REV();
+ 28a:	23 df       	rcall	.-442    	; 0xd2 <Motor_On_REV>
+		state_ptr = &(State3A);	// set State to State3A
+ 28c:	82 ef       	ldi	r24, 0xF2	; 242
+ 28e:	90 e0       	ldi	r25, 0x00	; 0
+ 290:	90 93 62 00 	sts	0x0062, r25
+ 294:	80 93 61 00 	sts	0x0061, r24
+ 298:	08 95       	ret
+
+0000029a <_exit>:
+ 29a:	f8 94       	cli
+
+0000029c <__stop_program>:
+ 29c:	ff cf       	rjmp	.-2      	; 0x29c <__stop_program>
